@@ -1,0 +1,18 @@
+▪ Podrška za različite tipove korisnickih naloga:
+- neprijavljeni korisnik (gost)
+- prijavljeni korisnik (admin)
+- prijavljeni korisnik (zaposleni)
+
+▪ Internacionalizacija:
+- engleski jezik (podrazumjevano)
+- srpski jezik
+
+▪ Korisnička podešavanja:
+- tamna tema (podrazumjevano)
+- svijetla tema
+- zelena tema
+
+▪ Korisničko uputstvo
+- za svaku od tri moguće vrste korisnika (gost, admin i zaposleni) postoji korisničko uputstvo koje se prikazuje na engleskom odnosno na srpskom jeziku (u zavisnosti od odabranog jezika).
+
+https://github.com/RadenkoLukic/Studentski-centar.git
