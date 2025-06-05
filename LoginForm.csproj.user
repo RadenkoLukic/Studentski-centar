@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="AktuelnostiView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="CustomizeProfile_Popup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="DashboardWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="KonkursiView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="KontaktView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="LoginWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MenzaView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="StudentskiSmjestajView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UpravljajZaposlenimaView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UputstvoView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="AktuelnostiView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="CustomizeProfile_Popup.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="KonkursiView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="KontaktView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="LoginWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MenzaView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="StudentskiSmjestajView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UpravljajZaposlenimaView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,526 @@
+﻿<UserControl x:Class="LoginForm.UpravljajZaposlenimaView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LoginForm"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+       
+        <Style x:Key="textHint" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Grid.Column" Value="1" />
+            <Setter Property="Margin" Value="0 0 0 0" />
+            <Setter Property="Width" Value="180" />
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Padding" Value="0,3,0,0"/>
+            <Setter Property="Foreground" Value="#212f3d "/>
+            <Setter Property="Background" Value="White" />
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+
+
+        <Style x:Key="textBox" TargetType="PasswordBox">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Grid.Column" Value="1" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="5,0,5,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+
+        </Style>
+        <!-- Stil za dugmad u Popup Menu -->
+        <Style x:Key="PopupButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF2C3149" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Height" Value="50" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Margin" Value="0,2,0,2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Animacija za prelazak mišem -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF4A6372" />
+                            </Trigger>
+                            <!-- Animacija za pritisak na dugme -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF3A5362" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustomTextBoxStyle" TargetType="TextBox">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10,0,0,0"/>
+            <Setter Property="Margin" Value="105,5,0,0"/>
+            <Setter Property="BorderBrush" Value="#34495E"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Height" Value="30"/>
+            <!-- Povećana visina -->
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <!-- Centriran tekst vertikalno -->
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Gray" BlurRadius="5" ShadowDepth="1"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                    BorderBrush="{TemplateBinding BorderBrush}" 
+                    BorderThickness="{TemplateBinding BorderThickness}" 
+                    CornerRadius="5" Padding="0">
+                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#3498DB"/>
+                    <Setter Property="BorderThickness" Value="3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <Style x:Key="RoundedDatePickerStyle" TargetType="DatePicker" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#34495E"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="10,0,0,0"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="SelectedDateFormat" Value="Short"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DatePicker">
+                        <Grid>
+                            <Border x:Name="OuterBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <DatePickerTextBox x:Name="PART_TextBox"
+                                               Grid.Column="0"
+                                               Background="Transparent"
+                                               BorderThickness="0"
+                                               Padding="{TemplateBinding Padding}"
+                                               VerticalContentAlignment="Center">
+                                        <DatePickerTextBox.Style>
+                                            <Style TargetType="DatePickerTextBox">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="DatePickerTextBox">
+                                                            <Grid>
+                                                                <ScrollViewer x:Name="PART_ContentHost"/>
+                                                                <TextBlock x:Name="WatermarkText"
+                                                                   Text="dd/mm/yyyy"
+                                                                   Foreground="Gray"
+                                                                   Margin="10,0,30,0"
+                                                                   VerticalAlignment="Center"
+                                                                   IsHitTestVisible="False"
+                                                                   Visibility="Collapsed"/>
+                                                            </Grid>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="Text" Value="">
+                                                                    <Setter TargetName="WatermarkText" Property="Visibility" Value="Visible"/>
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </DatePickerTextBox.Style>
+                                    </DatePickerTextBox>
+
+                                    <!-- Dugme za kalendar -->
+                                    <Button x:Name="PART_Button"
+                                    Grid.Column="1"
+                                    Width="30"
+                                    Height="30"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Focusable="False"
+                                    Cursor="Hand"
+                                    Margin="0,0,5,0">
+                                        <Path Data="M0,0 L1,0 1,1 0,1 Z M0.2,0.2 L0.8,0.2 M0.2,0.4 L0.8,0.4 M0.2,0.6 L0.8,0.6"
+                                      Stretch="Uniform"
+                                      Stroke="Gray"
+                                      StrokeThickness="2"
+                                      Width="12" Height="12"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Center"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+
+                            <!-- Popup kalendar -->
+                            <Popup x:Name="PART_Popup"
+                           Placement="Center"
+                           StaysOpen="False"
+                           AllowsTransparency="True"
+                           Focusable="False"
+                           IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Border Background="White" BorderBrush="#34495E" BorderThickness="1">
+                                    <Calendar x:Name="PART_Calendar"
+                                      IsTodayHighlighted="True"
+                                      SelectedDate="{Binding SelectedDate, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
+                                </Border>
+                            </Popup>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="OuterBorder" Property="BorderBrush" Value="#3498DB"/>
+                                <Setter TargetName="OuterBorder" Property="BorderThickness" Value="3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RoundedComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#34495E"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="10,0,0,0"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="IsEditable" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Border x:Name="OuterBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ContentPresenter x:Name="ContentSite"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"/>
+
+                                    <!-- Strelica -->
+                                    <ToggleButton x:Name="ToggleButton"
+                                          Grid.Column="1"
+                                          Width="30"
+                                          Height="30"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          Focusable="False"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press"
+                                          Margin="0,0,5,0">
+                                        <Path Data="M 0 0 L 4 4 L 8 0 Z"
+                                      Stretch="Uniform"
+                                      Fill="Gray"
+                                      Width="10"
+                                      Height="10"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Center"/>
+                                    </ToggleButton>
+                                </Grid>
+                            </Border>
+
+                            <!-- Popup koji koristi ItemsPresenter -->
+                            <Popup x:Name="PART_Popup"
+                           Placement="Bottom"
+                           Width="300"
+                           IsOpen="{TemplateBinding IsDropDownOpen}"
+                           AllowsTransparency="True"
+                           Focusable="False"
+                           PopupAnimation="Slide">
+                                <Grid>
+                                    <Border x:Name="DropDownBorder"
+                                    Background="White"
+                                    BorderBrush="#34495E"
+                                    BorderThickness="1">
+                                        <ScrollViewer Margin="4" SnapsToDevicePixels="True">
+                                            <StackPanel IsItemsHost="True"
+                                                KeyboardNavigation.DirectionalNavigation="Contained" />
+                                        </ScrollViewer>
+                                    </Border>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="OuterBorder" Property="BorderBrush" Value="#3498DB"/>
+                                <Setter TargetName="OuterBorder" Property="BorderThickness" Value="3"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+    </UserControl.Resources>
+    
+    <Grid>
+        <TextBlock x:Name="UpravljajZaposlenimaNaslov"  Text="Upravljaj zaposlenima"
+            FontSize="24" FontWeight="Bold"
+            Foreground="{DynamicResource PrimaryTextBrush}"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Center"
+            Margin="0,15,10,0"/>
+
+        <Button x:Name="BtnDodajZaposlenog" Content="➕ Dodaj zaposlenog" 
+            VerticalAlignment="Top" 
+            HorizontalAlignment="Left"
+            Click="BtnDodajZaposlenog_Click"
+            Visibility="Visible"
+            FontWeight="Bold"
+            Margin="15,10,0,0"
+            Style="{StaticResource PopupButtonStyle}"/>
+
+        <!-- Popup za unos podataka -->
+        <Popup x:Name="DodajZaposlenogPopup" Placement="Center" StaysOpen="True" AllowsTransparency="True" Width="450" Height="630">
+            <Border x:Name="DodajZaposlenogPopupBorder" Background="#2C3E50" CornerRadius="15" Padding="15" BorderBrush="#34495E" BorderThickness="2"
+                    Effect="{DynamicResource ShadowEffect}">
+                <Grid>
+
+                    <!-- Dugme za zatvaranje -->
+                    <Button x:Name="DodajZaposlenogPopupCloseButton" Content="✖" Width="30" Height="30" 
+                        HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Background="Transparent" Foreground="White"
+                        FontSize="18" BorderThickness="0"
+                        Cursor="Hand"
+                        Click="ZatvoriPopup_Click"/>
+
+                    <StackPanel Margin="10,0,0,0">
+                        <TextBlock x:Name="DodajZaposlenogTitle" Text="Unesite podatke:" FontSize="16" FontWeight="Bold" Margin="0,10,0,10" 
+                            Foreground="White" Width="200" HorizontalAlignment="Left"/>
+
+                        <StackPanel>
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel1" Text="Ime: " Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <TextBox x:Name="ImeTextBox" Style="{StaticResource CustomTextBoxStyle}"/>
+                            </Grid>
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel2" Text="Prezime: " Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <TextBox x:Name="PrezimeTextBox" Style="{StaticResource CustomTextBoxStyle}"/>
+                            </Grid>
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel3" Text="Email: " Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <TextBox x:Name="EmailTextBox" Style="{StaticResource CustomTextBoxStyle}"/>
+                            </Grid>
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel4" Text="Username: " Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <TextBox x:Name="UsernameTextBox" Style="{StaticResource CustomTextBoxStyle}"/>
+                            </Grid>
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel5" Text="Lozinka:" Foreground="White" Margin="0,10,0,0" FontWeight="Bold"/>
+                                <!--TextBox Text="{Binding Sifra}" Style="{StaticResource CustomTextBoxStyle}"/-->
+
+                                <Border x:Name="textBorder" CornerRadius="5" Height="30" BorderBrush="Gray" Panel.ZIndex="1" BorderThickness="1"
+                                    Background="White"  Margin="106,5,80,0">
+                                    <TextBlock x:Name="textPassword" MouseDown="textPassword_MouseDown" 
+                                        Text="Nova lozinka" Style="{StaticResource textHint}"  />
+                                </Border>
+
+                                <Border x:Name="passwordBorder" CornerRadius="5" Height="30" BorderBrush="Gray" BorderThickness="1" Background="White" Margin="106,5,80,0">
+                                    <PasswordBox x:Name="passwordBox" PasswordChanged="PasswordBox_PasswordChanged" GotFocus="passwordBox_GotFocus" 
+                                        LostFocus="passwordBox_LostFocus" Style="{StaticResource textBox}" />
+                                </Border>
+
+                                <CheckBox x:Name="CheckBox" Content="👁" IsChecked="False" Foreground="White" FontSize="25"
+                                    Checked="CheckBox_Show" Unchecked="CheckBox_Show" Margin="330,-1,0,1"
+                                    LostFocus="CheckBox_LostFocus" VerticalContentAlignment="Center" />
+                            </Grid>
+
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel6" Text="Broj Telefona: " Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <TextBox x:Name="BrojTelefonaTextBox" Style="{StaticResource CustomTextBoxStyle}"/>
+                            </Grid>
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel7" Text="JMBG: " Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <TextBox x:Name="JMBGTextBox" Style="{StaticResource CustomTextBoxStyle}"/>
+                            </Grid>
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel8" Text="Zvanje: " Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <TextBox x:Name="ZvanjeTextBox" Style="{StaticResource CustomTextBoxStyle}"/>
+                            </Grid>
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel9" Text="Tema: " Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <ComboBox x:Name="TemaComboBox" Margin="106,5,0,0" SelectedIndex="0" Style="{StaticResource RoundedComboBoxStyle}">
+                                    <ComboBoxItem Content="Tamna"/>
+                                    <ComboBoxItem Content="Svijetla"/>
+                                    <ComboBoxItem Content="Zelena"/>
+                                </ComboBox>
+                            </Grid>
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel10" Text="Jezik: " Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <ComboBox x:Name="JezikComboBox" Margin="106,5,0,0" SelectedIndex="0" Style="{StaticResource RoundedComboBoxStyle}">
+                                    <ComboBoxItem Content="Srpski"/>
+                                    <ComboBoxItem Content="Engleski"/>
+                                </ComboBox>
+                            </Grid>
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel11" Text="Datum Rođenja: " Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <DatePicker x:Name="DatumRodjenjaDatePicker" Style="{StaticResource RoundedDatePickerStyle}" Margin="106,5,0,0" SelectedDateFormat="Short" Loaded="DatePicker_Loaded"/>
+                            </Grid>
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel12" Text="Datum Zaposlenja: " Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <DatePicker x:Name="DatumZaposlenjaDatePicker" Style="{StaticResource RoundedDatePickerStyle}" Margin="106,5,0,0" SelectedDateFormat="Short" Loaded="DatePicker_Loaded"/>
+                            </Grid>
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel13" Text="Paviljon:" Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <ComboBox x:Name="PaviljonComboBox" Margin="106,5,0,0" SelectedIndex="0" Style="{StaticResource RoundedComboBoxStyle}">
+                                    <ComboBoxItem Content="Paviljon 1"/>
+                                    <ComboBoxItem Content="Paviljon 2"/>
+                                    <ComboBoxItem Content="Paviljon 3"/>
+                                    <ComboBoxItem Content="Paviljon 4"/>
+                                </ComboBox>
+                            </Grid>
+                            <Grid>
+                                <TextBlock x:Name="DodajZaposlenogLabel14" Text="Adresa Stanovanja:" Foreground="White" FontWeight="Bold" Margin="0,10,0,0"/>
+                                <TextBox x:Name="AdresaTextBox" Style="{StaticResource CustomTextBoxStyle}"/>
+                            </Grid>
+
+                            <Button x:Name="PotvrdiButton" Content="Potvrdi" Click="PotvrdiButton1_Click" Margin="0,10,0,0"
+                            FontWeight="Bold" HorizontalAlignment="Center" Padding="10,5" Style="{StaticResource PopupButtonStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Popup>
+
+
+        <!-- Tabela sa zaposlenima -->
+        <DataGrid x:Name="ZaposleniDataGrid"
+            BeginningEdit="ZaposleniDataGrid_BeginningEdit"
+   
+           CanUserAddRows="False"
+           AutoGenerateColumns="False"
+           CanUserDeleteRows="False"
+           IsReadOnly="False"
+           Background="White"
+           Foreground="Black"
+           HorizontalAlignment="Stretch"
+           VerticalAlignment="Top"
+           MinHeight="100"
+           MaxHeight="400"
+           ScrollViewer.VerticalScrollBarVisibility="Auto"
+           Margin="10,100,10,70"
+           Visibility="Collapsed">  
+
+            <DataGrid.Columns>
+
+
+                <DataGridTextColumn Header="OsobaID" Binding="{Binding OsobaID, Mode=TwoWay}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Ime" Binding="{Binding Ime, Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Prezime" Binding="{Binding Prezime, Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Korisničko ime" Binding="{Binding Username, Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email, Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Šifra" Binding="{Binding Sifra, Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Datum zaposlenja" Binding="{Binding DatumZaposlenja, StringFormat='dd/MM/yyyy', Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Paviljon" Binding="{Binding Paviljon, Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Telefon" Binding="{Binding BrojTelefona, Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Datum rođenja" Binding="{Binding DatumRodjenja, StringFormat='dd/MM/yyyy', Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="JMBG" Binding="{Binding JMBG, Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Adresa" Binding="{Binding AdresaStanovanja, Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Zvanje" Binding="{Binding Zvanje, Mode=TwoWay}" Width="*"/>
+                <DataGridTextColumn Header="Tema" Binding="{Binding Tema, Mode=TwoWay}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Jezik" Binding="{Binding Jezik, Mode=TwoWay}" Width="*" IsReadOnly="True"/>
+
+
+                <DataGridTemplateColumn Header="Uredi">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="✏️"
+                                    Width="30"
+                                    Height="30"
+                                    Background="LightBlue"
+                                    Click="EditButton_Click">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding OsobaID}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Obriši">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="❌" 
+                                    Click="DeleteZaposleni_Click"
+                                    Tag="{Binding OsobaID}"
+                                    Background="Red" 
+                                    Foreground="White" 
+                                    FontWeight="Bold"
+                                    Padding="5">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding OsobaID}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+            
+        </DataGrid>
+        <Button Content="Sačuvaj izmjene" Click="SaveChanges_Click" Visibility="Collapsed"
+                Name="SaveButton" Margin="0,0,0,10" VerticalAlignment="Bottom" Style="{StaticResource PopupButtonStyle}"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,324 @@
+﻿<Window x:Class="LoginForm.DashboardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:local="clr-namespace:LoginForm"
+       
+        mc:Ignorable="d"
+        Title="Dashboard"
+        Height="750"
+        Width="1080"
+        WindowStyle="None"
+        
+        
+        Background="Transparent"
+        FocusVisualStyle="{x:Null}"
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen">
+
+
+    <Window.Resources>
+
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <!-- Promena kursora na ruku -->
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                            Background="{TemplateBinding Background}" 
+                            CornerRadius="5"
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Triggers za Hover i Klik -->
+                        <ControlTemplate.Triggers>
+                            <!-- Efekat kada je miš preko dugmeta -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#33FFFFFF"/>
+                                <!-- Svetliji efekat -->
+                                <Setter TargetName="border" Property="BorderBrush" Value="White"/>
+                            </Trigger>
+
+                            <!-- Efekat kada je dugme pritisnuto -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#66FFFFFF"/>
+                                <!-- Još svetliji efekat -->
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FFDDDDDD"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- Storyboard za otvaranje menija: povećava levi margin glavnog sadržaja -->
+        <Storyboard x:Key="MarginToMenuOpen">
+            <ThicknessAnimation Storyboard.TargetName="MainContentContainer"
+                            Storyboard.TargetProperty="Margin"
+                            To="285,0,0,0"
+                            Duration="0:0:0.3" />
+        </Storyboard>
+
+        <!-- Storyboard za zatvaranje menija: vraća levi margin na 0 -->
+        <Storyboard x:Key="MarginToMenuClosed">
+            <ThicknessAnimation Storyboard.TargetName="MainContentContainer"
+                            Storyboard.TargetProperty="Margin"
+                            To="0,0,0,0"
+                            Duration="0:0:0.3" />
+        </Storyboard>
+
+        <!-- Stil za dugmad u Side Menu -->
+        <Style x:Key="MenuButtonStyle" TargetType="Button">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="#FF2C3E50" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Height" Value="50" />
+            <Setter Property="Width" Value="265" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Margin" Value="0,2,0,2" />
+
+            <!-- Definišemo svoje prilagođeno svojstvo -->
+            <Setter Property="Tag" Value="False" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Animacija za prelazak mišem -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF4A6372" />
+                            </Trigger>
+                            <!-- Animacija za pritisak na dugme -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF3A5362" />
+                            </Trigger>
+                            <!-- Novo: Dugme ostaje selektovano kada se klikne -->
+                            <Trigger Property="Tag" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF7B9BA6" />
+                                <!-- Aktivna boja -->
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <!-- Stil za dugmad u Popup Menu -->
+        <Style x:Key="PopupButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF2C3E50" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Height" Value="50" />
+            <Setter Property="Width" Value="195" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Margin" Value="0,2,0,2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Animacija za prelazak mišem -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF4A6372" />
+                            </Trigger>
+                            <!-- Animacija za pritisak na dugme -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF3A5362" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+        <Storyboard x:Key="OpenMenuAnimation">
+            <DoubleAnimation Storyboard.TargetName="MenuPanel" 
+                         Storyboard.TargetProperty="Width" 
+                         From="0" To="285" Duration="0:0:0.2" />
+        </Storyboard>
+        <Storyboard x:Key="CloseMenuAnimation">
+            <DoubleAnimation Storyboard.TargetName="MenuPanel" 
+                         Storyboard.TargetProperty="Width" 
+                         From="285" To="0" Duration="0:0:0.2" />
+        </Storyboard>
+    </Window.Resources>
+
+    <!-- Zaobljeni prozor -->
+    <Border Name="MainBorder" Background="#FF2C3E50" CornerRadius="20,20,20,20">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <!-- Kolona za meni -->
+                <ColumnDefinition Width="Auto" />
+                <!-- Kolona za glavni sadržaj -->
+                <ColumnDefinition Width="229*" />
+                <ColumnDefinition Width="604*"/>
+                <ColumnDefinition Width="245*"/>
+
+            </Grid.ColumnDefinitions>
+
+
+            <Border Name="Border" CornerRadius="20,20,0,0" Background="#FF2C3E50" VerticalAlignment="Top"
+                    Height="55" Grid.ColumnSpan="4" Margin="-2,-2,-2,0" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+                <!-- DockPanel unutar zaobljenog Border-a -->
+                <DockPanel LastChildFill="True" HorizontalAlignment="Stretch" Grid.Column="2"  >
+
+
+                    <!-- Leva strana: Menu dugme i Logo -->
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Width="420" Margin="0,0,0,0" >
+                        <Button x:Name="MenuButton" Content="☰" Width="40" Height="40" FontSize="22"
+                        VerticalAlignment="Center" Foreground="White" Margin="10,0,0,0" Click="ToggleMenu"
+                        ToolTip="Meni" Style="{StaticResource RoundedButtonStyle}"/>
+                        <!--<Image x:Name="LogoImage" Source="\Resources\Icons\SCNTLogo.png" Width="220" Height="120" Margin="-25" > -->
+                        <Image x:Name="LogoImage" Source="\Resources\Icons\SCNTLogo4.png"
+                               Width="281" Height="60" Margin="-10,-3,0,0" >
+                            <Image.ToolTip>
+                                <ToolTip Content="Studentski centar 'Nikola Tesla'" />
+                            </Image.ToolTip>
+                        </Image>
+
+                    </StackPanel>
+
+                    <!-- Desna strana: Dugme za promenu teme, zatvaranje, Minimize i Maximize -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
+
+
+                        <Button x:Name="LoginButton" Content="🔑 Prijava" Width="90" Height="30" FontSize="15"
+                         Click="Login_Click" Visibility="Visible"
+                            ToolTip="Prijava" Style="{StaticResource RoundedButtonStyle}"/>
+
+
+                        <Button x:Name="ProfileButton" Content="👤" Width="30" Height="30" FontSize="18"
+                        Background="#FF2C3E50" Foreground="White" Margin="20,0,5,0" 
+                        Visibility="Collapsed" Click="ProfileButton_Click"
+                        ToolTip="Profil" Style="{StaticResource RoundedButtonStyle}"/>
+
+
+                        <Popup x:Name="ProfilePopup" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+                            <Border x:Name="ProfilePopup_Border" Background="#2C3E50" CornerRadius="15" Padding="15"
+                                BorderBrush="#34495E" BorderThickness="2">
+                                <StackPanel HorizontalAlignment="Center">
+
+                                    <!-- Admin ikona -->
+                                    <Border x:Name="ProfilePopup_Icon1_Border" Width="80" Height="80" Background="#2C3E50" CornerRadius="40" Margin="0,0,0,10">
+                                        <TextBlock x:Name="ProfilePopup_Icon1" Text="👤" FontSize="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border x:Name="ProfilePopup_Icon2_Border" Width="25" Height="25" Background="#2C3E50" CornerRadius="40" Margin="30,-60,0,0">
+                                        <TextBlock x:Name="ProfilePopup_Icon2" Text="⚙" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <!-- Dugme za podešavanje profila -->
+                                    <Button x:Name="ProfilePopup_Customize" Style="{StaticResource PopupButtonStyle}" Content="⚙ Customize Profile" Click="CustomizeProfile_Click" />
+                                    <Button x:Name="ProfilePopup_Logout" Style="{StaticResource PopupButtonStyle}" Content="🔓 Logout" Click="Logout_Click" />
+
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+
+                        <!-- Inkludiraj CustomizeProfilePopup UserControl -->
+                        <Popup x:Name="CustomizeProfilePopup" StaysOpen="False" AllowsTransparency="True" Closed="ProfilePopup_Closed">
+                            <local:CustomizeProfile_Popup />
+                        </Popup>
+
+                        <!-- Masking effect (Blur effect on background) -->
+                        <Grid x:Name="BackgroundMask" Visibility="Collapsed" Background="Black" Opacity="0.5">
+                            <Grid.Effect>
+                                <BlurEffect Radius="10"/>
+                            </Grid.Effect>
+                        </Grid>
+
+
+                        <Button Content="🌙" Name="ThemeToggleButton" Click="ToggleTheme"
+                            ToolTip="Promjeni temu" Style="{StaticResource RoundedButtonStyle}"/>
+
+                        <Button Name="LanguageToggleButton" Click="ToggleLanguage"
+                             ToolTip="Promeni " Style="{StaticResource RoundedButtonStyle}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="🌍" FontSize="16" Margin="0,0,0,0"/>
+                                <TextBlock x:Name="LanguageSymbol" Text="S" FontSize="12"/>
+                            </StackPanel>
+                        </Button>
+
+
+                        <Button Content="➖" Name="MinimizeButton" Click="MinimizeButton_Click"
+                            ToolTip="Umanji" Style="{StaticResource RoundedButtonStyle}"/>
+
+                        <Button Content="⬜" Name="MaximizeButton" Style="{StaticResource RoundedButtonStyle}"
+                            Click="MaximizeButton_Click" ToolTip="Uvećaj"/>
+
+                        <Button Content="❌" Name="CloseButton" Click="CloseButton_Click" Margin="0,0,10,0"
+                            Style="{StaticResource RoundedButtonStyle}" ToolTip="Zatvori"/>
+                    </StackPanel>
+
+                </DockPanel>
+            </Border>
+
+
+            <!-- Side Menu Panel -->
+            <Grid Name="MenuPanel" Grid.Column="0" Width="275" Background="#FF324759" HorizontalAlignment="Left" 
+                  Margin="0,50,0,0" Visibility="Collapsed" Grid.ColumnSpan="3" Panel.ZIndex="100">
+
+                <StackPanel Orientation="Vertical" Margin="5" Width="275">
+
+                    <!-- Dugmad u side menu -->
+                    <Button Name="MenuItem1" Content="Aktuelnosti" Style="{StaticResource MenuButtonStyle}" Click="MenuButton1_Click"/>
+                    <Button Name="MenuItem2" Content="Konkursi" Style="{StaticResource MenuButtonStyle}" Click="MenuButton2_Click"/>
+                    <Button Name="MenuItem3" Content="Studentski smještaj" Style="{StaticResource MenuButtonStyle}" Click="MenuButton3_Click"/>
+                    <Button Name="MenuItem4" Content="Menza" Style="{StaticResource MenuButtonStyle}" Click="MenuButton4_Click"/>
+                    <Button Name="MenuItem5" Content="Kontakt" Style="{StaticResource MenuButtonStyle}" Click="MenuButton5_Click"/>
+
+                    <Button Name="MenuItem6" Content="Upravljaj zaposlenima" Style="{StaticResource MenuButtonStyle}" Visibility="Collapsed" Click="MenuButton6_Click"/>
+
+                    <Button Name="MenuItem7" Content="Uputstvo" Style="{StaticResource MenuButtonStyle}" Click="MenuButton7_Click"/>
+                </StackPanel>
+
+            </Grid>
+
+
+            <!-- Glavni sadržaj -->
+            <Grid Grid.Column="1" Margin="0,50,0,0" Grid.ColumnSpan="3" >
+                <Border x:Name="MainContentContainer" Background="#FF34495E" RenderTransformOrigin="0,0.5" CornerRadius="0,0,20,20" >
+
+
+                    <Grid>
+                        <!-- Glavni sadržaj prozora -->
+                        <ContentControl x:Name="MainContentControl" Grid.Column="1"/>
+
+                    </Grid>
+                </Border>
+
+            </Grid>
+
+
+
+        </Grid>
+    </Border>
+</Window>

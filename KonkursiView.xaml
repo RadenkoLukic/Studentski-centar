@@ -1,0 +1,180 @@
+﻿<UserControl x:Class="LoginForm.KonkursiView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LoginForm"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+
+        <!-- Stil za dugmad u Popup Menu -->
+        <Style x:Key="PopupButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF2C3149" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Height" Value="50" />
+            <Setter Property="Width" Value="190" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Margin" Value="0,2,0,2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Animacija za prelazak mišem -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF4A6372" />
+                            </Trigger>
+                            <!-- Animacija za pritisak na dugme -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF3A5362" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustomTextBoxStyle" TargetType="TextBox">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="10,0,0,0"/>
+            <Setter Property="Margin" Value="105,5,0,0"/>
+            <Setter Property="BorderBrush" Value="#34495E"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Height" Value="30"/>
+            <!-- Povećana visina -->
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <!-- Centriran tekst vertikalno -->
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Gray" BlurRadius="5" ShadowDepth="1"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="5" Padding="0">
+                            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#3498DB"/>
+                    <Setter Property="BorderThickness" Value="3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <TextBlock x:Name="Konkursi_Title" Text="Konkursi"
+            FontSize="24" FontWeight="Bold"
+            Foreground="{DynamicResource PrimaryTextBrush}"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Center"
+            Margin="0,15,10,0"/>
+
+        <Button x:Name="BtnDodajOglas" Content="➕ Dodaj novi oglas" 
+            VerticalAlignment="Top" 
+            HorizontalAlignment="Left"
+            Click="BtnDodajOglas_Click"
+            Visibility="Visible"
+            FontWeight="Bold"
+            Margin="15,10,0,0"
+            Style="{StaticResource PopupButtonStyle}"/>
+
+
+        <!-- Popup za unos podataka -->
+        <Popup x:Name="KonkursiPopup" Placement="Center" StaysOpen="True" AllowsTransparency="True" Width="350" Height="450">
+            <Border x:Name="KonkursiPopupBorder"  Background="#2C3E50" CornerRadius="15" Padding="15" BorderBrush="#34495E" BorderThickness="2"
+                   Effect="{DynamicResource ShadowEffect}">
+                <Grid>
+
+                    <!-- Dugme za zatvaranje -->
+                    <Button x:Name="KonkursiPopupCloseButton" Content="✖" Width="30" Height="30" 
+                HorizontalAlignment="Right" VerticalAlignment="Top"
+                Background="Transparent" Foreground="White"
+                FontSize="18" BorderThickness="0"
+                Cursor="Hand"
+                Click="ZatvoriPopup_Click"/>
+
+                    <StackPanel Margin="10,0,0,0">
+                        <TextBlock x:Name="KonkursiTitle" Text="Konkursi" FontSize="16" FontWeight="Bold" Margin="0,10,0,10" 
+                            Foreground="{DynamicResource PrimaryTextBrush}" Width="225" HorizontalAlignment="Left"/>
+
+                        <TextBlock x:Name="KonkursiLabel1" Text="Naslov konkursa:" Foreground="White" FontWeight="Bold"/>
+                        <TextBox x:Name="NaslovTextBox" Margin="0,0,0,10" Style="{StaticResource CustomTextBoxStyle}" 
+                          TextWrapping="Wrap"/>
+                        
+                        <TextBlock x:Name="KonkursiLabel2" Text="Tekst konkursa:" Foreground="White" FontWeight="Bold"/>
+                        <TextBox x:Name="SadrzajTextBox" Margin="0,0,0,10" Style="{StaticResource CustomTextBoxStyle}" 
+                            AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Height="150"/>
+
+
+                        <Button x:Name="OdaberiPDFButton" Content="🡅 Odaberi PDF" Click="OdaberiPDFButton_Click" Margin="0,10,0,10"
+                        Style="{StaticResource PopupButtonStyle}" Height="35" Width="200" FontWeight="Bold"/>
+                        <TextBlock x:Name="PDFFileNameText" Text="Nijedan fajl nije odabran" Foreground="Gray" Margin="0,0,0,10"/>
+
+                        <Button x:Name="PotvrdiButton" Content="Potvrdi" Click="PotvrdiButton_Click"
+                        FontWeight="Bold" HorizontalAlignment="Center" Padding="10,5"
+                        Style="{StaticResource PopupButtonStyle}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Popup>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,70,0,0">
+            <ItemsControl x:Name="KonkursiWrapPanel" Margin="10,10,0,0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="1" Padding="10" Margin="5" Width="Auto">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Naslov}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource PrimaryTextBrush}" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding SadrzajOglasa}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,10,0,0"
+                                           TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding DatumObjave, StringFormat=\{0:dd.MM.yyyy HH:mm\}}" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,20,0,0"/>
+                                <TextBlock Text="{Binding ImePrezime}" FontStyle="Italic" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                <Grid Margin="0,20,0,0">
+                                    <Button x:Name="OtvoriPDFButton_Konkurs" Content="Otvori PDF" Click="OtvoriPDF_Click" Tag="{Binding Dokument}" Style="{StaticResource PopupButtonStyle}"
+                                        HorizontalAlignment="Left"/>
+                                    <Button x:Name="Obrisi_Button_Konkurs" Content="Obriši" Click="ObrisiKonkurs_Click" Tag="{Binding OglasID}" 
+                                        Background="Red" HorizontalAlignment="Right">
+                                        <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource PopupButtonStyle}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding DataContext.IsLoggedIn, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                        </Button.Style>
+                                    </Button>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
